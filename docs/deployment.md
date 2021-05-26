@@ -1,4 +1,4 @@
-# Automated workflows (WIP)
+# Automated workflows and infrastructure (WIP)
 
 [![Collaborate on HackMD](https://hackmd.io/LGwdWMlvTOOfyXBzLw9hyg/badge)](https://hackmd.io/LGwdWMlvTOOfyXBzLw9hyg)
 
@@ -7,26 +7,24 @@
 ## Application deployment
 
 ```plantuml
-
 actor Developer as dev 
 box "Internet"
 participant "Github Action" as builder
 database "GitHub Artifacts" as storage
 end box
 box VA Network
-participant "Jankins" as deployer
-participant "ECS?" as runner
+participant "Jenkins" as deployer
+participant "EKS" as runner
 end box
 dev->builder : merge into main
 builder->builder: build container artifact
 builder->storage : save container artifact
 builder->deployer: POST deploy webhook
 deployer->builder : return link to deploy job view?
-builder->dev : notify deployment triggered
+builder->builder : log deployment watch link
 deployer->storage : GET container artifact 
 storage->deployer : return container artifact
 deployer->runner : deploy container
-deployer->dev : how are we going to tell them it is done
 ```
 
 ## TechDocs publication 
@@ -45,40 +43,112 @@ dispatcher->builder : dispatch build publish
 builder->builder: build web artifact (tar)
 builder->buildStorage : save web tar
 builder->publisher: POST publish webhook
-publisher->builder : return link to publish job view?
+publisher->builder : return link to publish job view
+builder->builder : log deployment watch link
 publisher->buildStorage : GET web tar 
 buildStorage->publisher : return web tar
 publisher->hostStorage : untar and sync files
 ```
 
+#### Jenkins environment variables
+
+| Name                   | Description | 
+| --------               | -------      | 
+|TECHDOCS_S3_BUCKET_NAME| | 
+| AWS_ACCESS_KEY_ID      |AWS IAM user |
+| AWS_SECRET_ACCESS_KEY  |              |
+| AWS_REGION             |              |
+
+#### Minimum IAM user access policy
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+            ],
+            "Resource": [
+                "arn:aws:s3:::TECHDOCS_S3_BUCKET_NAME/*",
+                "arn:aws:s3:::TECHDOCS_S3_BUCKET_NAME"
+            ]
+        }
+    ]
+}
+```
+
 ## Backstage backend components
 
 ```plantuml
-
+left to right direction
 cloud "AWS\n"{
   component "PostgreSQL" as postgresql
   package container as "Backstage backend container"{
     [Catalog]
     [TechDocs]
+    [GitHub OAuth]
   } 
   [S3]
   [Catalog] --> [postgresql] : read write
   [TechDocs] --> [S3] : read 
-  REST - container
+  REST -up- container
 }
 
 cloud "GitHub\n" {
   interface "REST" as RepoAPI
   interface "REST" as OrgAPI
+  interface "REST" as OAuth
   OrgAPI - [Organization (Private)]
   RepoAPI - [Repository (Public)]
+  OAuth - [Identity]
   [Catalog] --> OrgAPI : read
   [Catalog] --> RepoAPI : read
+  [GitHub OAuth] --> OAuth 
+}
+```
+
+#### Backstage backend container environment variables 
+
+|Name | Description | Privileges, permissions |
+| -------- | -------- | -------- |
+|  GITHUB_TOKEN     | GitHub Personal Access Token     | admin:org:read:org, user:read:user     |
+|AUTH_GITHUB_CLIENT_ID |GitHub OAuth| |
+|AUTH_GITHUB_CLIENT_SECRET| | |
+|TECHDOCS_S3_BUCKET_NAME| | |
+|AWS_ACCESS_KEY_ID |AWS IAM user | |
+|AWS_SECRET_ACCESS_KEY| | |
+|AWS_REGION | | |
+|POSTGRES_USER |PostgreSQL instance user |SELECT, INSERT, UPDATE, DELETE, TRUNCATE, CREATE, CONNECT |
+|POSTGRES_HOST | | |
+|POSTGRES_PORT | | |
+|POSTGRES_PASSWORD| | |
+
+#### Minimum IAM user policy
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject",
+                "s3:ListBucket"
+            ],
+            "Resource": [
+                "arn:aws:s3:::TECHDOCS_S3_BUCKET_NAME/*",
+                "arn:aws:s3:::TECHDOCS_S3_BUCKET_NAME"
+            ]
+        }
+    ]
 }
 ```
 
 ## Backstage frontend components
 ```plantuml
+left to right direction
 cloud "AWS\n" {
   package "Backstage backend container" {
     interface "REST" as BackstageAPI
@@ -87,15 +157,16 @@ cloud "AWS\n" {
 }
 
 package "Backstage frontend" {
-  [Frontend Auth]
+ 
   node "GitHub Plugins\n" {
+    [GitHub OAuth] --> BackstageAPI 
     [GitHub Pull Requests] 
     [GitHub Actions]
     [GitHub Code Insights]
     [GitHub Security Insights]
   }
   node "Backstage Plugins\n" {
-    [Catalog] -up-> BackstageAPI : "read write"
+    [Catalog] --> BackstageAPI : "read write"
     [TechDocs] --> BackstageAPI : read
   }
 }
@@ -103,18 +174,14 @@ package "Backstage frontend" {
 cloud "GitHub\n" {
   interface "REST" as RepoAPI
   interface "REST" as RepoPrivateAPI
+  interface "REST" as OAuth
   RepoAPI - [Repository (Public)]
   RepoPrivateAPI - [Repository (Private)]
   OAuth - [Identity]
-  [Frontend Auth] --> [OAuth]
+  [GitHub OAuth] --> [OAuth]
   [GitHub Pull Requests] --> RepoAPI : read
   [GitHub Actions] --> RepoPrivateAPI : read
   [GitHub Code Insights] --> RepoPrivateAPI : read
   [GitHub Security Insights] --> RepoPrivateAPI : read
 }
-
 ```
-
-
-
-
