@@ -77,19 +77,6 @@ cloud "GitHub\n" {
 }
 ```
 
-### Environment variables 
-
-| name | permissions | 
-| -------- | -------- | 
-| GITHUB_TOKEN| admin:org:read:org, user:read:user, repo:public_repo     | Backstage backend container     |
-|AUTH_GITHUB_CLIENT_ID| oauth     | 
-| AUTH_GITHUB_CLIENT_SECRET| oauth     | 
-| POSTGRES_USER| SELECT, INSERT, UPDATE, DELETE, TRUNCATE, CREATE, CONNECT     | 
-| POSTGRES_HOST| n/a     |  
-| POSTGRES_PORT| n/a     |  
-| POSTGRES_PASSWORD| n/a     | 
-| TECHDOCS_S3_BUCKET_NAME | n/a     | 
-
 ## Backstage frontend components
 ```plantuml
 cloud "AWS\n" {
