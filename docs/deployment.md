@@ -7,11 +7,16 @@
 ## Application deployment
 
 ```plantuml
+
 actor Developer as dev 
+box "Internet"
 participant "Github Action" as builder
 database "GitHub Artifacts" as storage
+end box
+box VA Network
 participant "Jankins" as deployer
 participant "ECS?" as runner
+end box
 dev->builder : merge into main
 builder->builder: build container artifact
 builder->storage : save container artifact
@@ -28,10 +33,14 @@ deployer->dev : how are we going to tell them it is done
 
 ```plantuml
 participant Dispatcher as dispatcher 
+box Internet 
 participant "Github Action" as builder
 database "Github Artifacts" as buildStorage
+end box
+box VA Network
 participant "Jenkins" as publisher
 database "S3" as hostStorage
+end box
 dispatcher->builder : dispatch build publish 
 builder->builder: build web artifact (tar)
 builder->buildStorage : save web tar
@@ -45,16 +54,17 @@ publisher->hostStorage : untar and sync files
 ## Backstage backend components
 
 ```plantuml
+
 cloud "AWS"{
-  package "Backstage backend container" as backstage
-  package backstage {
+  component "    <$postgresql>\nPostgreSQL" as postgresql
+  package container as "<$docker>\nBackstage backend"{
     [Catalog]
     [TechDocs]
-  }
+  } 
   [S3]
-  [Catalog] --> [Postgres Instance] : read write
+  [Catalog] --> [postgresql] : read write
   [TechDocs] --> [S3] : read 
-  REST - backstage
+  HTTPS - container
 }
 
 cloud "GitHub" {
@@ -66,6 +76,19 @@ cloud "GitHub" {
   [Catalog] --> RepoAPI : read
 }
 ```
+
+### Environment variables 
+
+| name | permissions | 
+| -------- | -------- | 
+| GITHUB_TOKEN| admin:org:read:org, user:read:user, repo:public_repo     | Backstage backend container     |
+|AUTH_GITHUB_CLIENT_ID| oauth     | 
+| AUTH_GITHUB_CLIENT_SECRET| oauth     | 
+| POSTGRES_USER| SELECT, INSERT, UPDATE, DELETE, TRUNCATE, CREATE, CONNECT     | 
+| POSTGRES_HOST| n/a     |  
+| POSTGRES_PORT| n/a     |  
+| POSTGRES_PASSWORD| n/a     | 
+| TECHDOCS_S3_BUCKET_NAME | n/a     | 
 
 ## Backstage frontend components
 ```plantuml
@@ -103,3 +126,7 @@ cloud "GitHub" {
 }
 
 ```
+
+
+
+
