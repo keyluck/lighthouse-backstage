@@ -79,7 +79,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ format('{0}-techdocs-latest', env.ENTITY_NAME) }}
-          path: ./sites
+          path: ./site
       - name: Dispatch notify Jenkins workflow
         uses: benc-uk/workflow-dispatch@v1
         with:
