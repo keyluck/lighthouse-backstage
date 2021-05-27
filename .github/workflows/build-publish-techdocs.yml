@@ -70,11 +70,18 @@ jobs:
         run: sudo npm install -g @techdocs/cli
       - name: Install mkdocs and mkdocs plugins
         run: pip install mkdocs-techdocs-core==0.*
-      - name: Generate docs
+      - name: Generate docs to ./sites
         run: techdocs-cli generate --no-docker
-      - name: Publish docs
-        run: >
-          techdocs-cli publish
-          --publisher-type awsS3
-          --storage-name $TECHDOCS_S3_BUCKET_NAME
-          --entity $ENTITY_NAMESPACE/$ENTITY_KIND/$ENTITY_NAME
+      - name: Tar TechDocs ./sites folder
+        run: tar -czvf techdocs-latest.tar.gz ./site
+      - name: Save TechDocs tar as Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ format('{0}-techdocs-latest', env.ENTITY_NAME) }}
+          path: ./site
+      # - name: Publish docs
+      #   run: >
+      #     techdocs-cli publish
+      #     --publisher-type awsS3
+      #     --storage-name $TECHDOCS_S3_BUCKET_NAME
+      #     --entity $ENTITY_NAMESPACE/$ENTITY_KIND/$ENTITY_NAME

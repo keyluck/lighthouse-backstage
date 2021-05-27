@@ -1,0 +1,15 @@
+name: test-techdocs-jenkins
+
+on: workflow_dispatch
+
+jobs:
+  run-jenkinsfile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: '7428-decouple-techdocs-publishing'
+      - name: jenkinsfile-runner-prepackaged
+        uses: jenkinsci/jenkinsfile-runner-github-actions/jenkinsfile-runner-prepackaged@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
