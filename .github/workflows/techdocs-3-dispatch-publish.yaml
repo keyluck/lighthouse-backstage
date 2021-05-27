@@ -20,9 +20,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Echo outputs
-        run: mkdir ./outputs && echo ${{ steps.get_artifact_id.outputs }} > ./outputs/outputs.json
+        run: mkdir ./outputs && cat ${{ steps.get_artifact_id.outputs }} > ./outputs/outputs.json
       - name: Echo artifacts
-        run: echo ${{ steps.get_artifact_id.outputs.artifacts[0].archive_download_url }} > ./outputs/artifacts.json
+        run: cat ${{ steps.get_artifact_id.outputs.artifacts[0].archive_download_url }} > ./outputs/artifacts.json
       - name: Save TechDocs tar as Artifact
         id: upload 
         uses: actions/upload-artifact@v2
