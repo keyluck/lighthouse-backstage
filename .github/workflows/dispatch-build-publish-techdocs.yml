@@ -1,4 +1,4 @@
-name: dispatch-build-publish-techdocs
+name: techdocs-dispatch-build-publish
 
 on:
   push:
@@ -14,7 +14,7 @@ jobs:
       - name: Invoke workflow with inputs
         uses: benc-uk/workflow-dispatch@v1
         with:
-          workflow: build-publish-techdocs
+          workflow: techdocs-build
           token: ${{ secrets.DISPATCH_BUILD_PUBLISH_TECHDOCS_TOKEN }}
           inputs: >
             {
