@@ -1,4 +1,4 @@
-name: "Techdocs: notify Jenkins"
+name: TECHDOCS-notify-jenkins
 
 on:
   workflow_dispatch: 
@@ -19,5 +19,5 @@ jobs:
           route: GET /repos/department-of-veterans-affairs/lighthouse-backstage/actions/runs/${{ env.RUN_ID }}/artifacts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-     - name: Get artifact id
+      - name: Get artifact id
         run: echo ${{ steps.get_artifact_id.outputs.data }} 
