@@ -1,4 +1,4 @@
-name: techdocs-run-jenkins
+name: techdocs-publish-with-jenkins
 
 on: workflow_dispatch
 
