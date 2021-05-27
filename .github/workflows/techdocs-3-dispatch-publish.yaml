@@ -19,8 +19,10 @@ jobs:
           route: GET /repos/department-of-veterans-affairs/lighthouse-backstage/actions/runs/${{ env.RUN_ID }}/artifacts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Echo artifacts 
-        run: echo ${{ steps.get_artifact_id.outputs }} && echo ${{ steps.get_artifact_id.outputs.artifacts[0].archive_download_url }}
+      - name: Echo outputs
+        run: echo ${{ steps.get_artifact_id.outputs }} | cat
+      - name: Echo artifacts
+        run: echo ${{ steps.get_artifact_id.outputs.artifacts[0].archive_download_url }}
       - name: Dispatch publish to (fake) Jenkins webhook
         uses: benc-uk/workflow-dispatch@v1
         with:
