@@ -20,9 +20,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Echo outputs
-        run: echo ${{ steps.get_artifact_id.outputs }} | cat
+        run: echo ${{ steps.get_artifact_id.outputs }} > outputs.json
       - name: Echo artifacts
-        run: echo ${{ steps.get_artifact_id.outputs.artifacts[0].archive_download_url }}
+        run: echo ${{ steps.get_artifact_id.outputs.artifacts[0].archive_download_url }} > artifacts.json
       - name: Dispatch publish to (fake) Jenkins webhook
         uses: benc-uk/workflow-dispatch@v1
         with:
