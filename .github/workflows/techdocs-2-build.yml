@@ -83,7 +83,7 @@ jobs:
       - name: Dispatch notify Jenkins workflow
         uses: benc-uk/workflow-dispatch@v1
         with:
-          workflow: techdocs-notify-jenkins
+          workflow: techdocs-dispatch-publish
           token: ${{ secrets.DISPATCH_BUILD_PUBLISH_TECHDOCS_TOKEN }}
           inputs: '{ "run_id": "${{ github.run_id }}" }'
 
