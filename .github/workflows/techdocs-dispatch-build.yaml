@@ -1,4 +1,4 @@
-name: techdocs-dispatch-build-publish
+name: techdocs-dispatch-build
 
 on:
   push:
