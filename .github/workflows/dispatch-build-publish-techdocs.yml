@@ -4,6 +4,7 @@ on:
   push:
     branches:
     - "main"
+  workflow_dispatch:
 
 
 jobs:
@@ -11,7 +12,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Invoke workflow with inputs
-        uses: aurelien-baudet/workflow-dispatch@v2
+        uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: build-publish-techdocs
           token: ${{ secrets.DISPATCH_BUILD_PUBLISH_TECHDOCS_TOKEN }}

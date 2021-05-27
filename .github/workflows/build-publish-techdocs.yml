@@ -50,6 +50,8 @@ jobs:
         with:
           repository: ${{ env.REPO_FULL_NAME }}
       - uses: actions/setup-node@v2
+      - name: Setup fx 
+        run: npm install fx
       - uses: actions/setup-python@v2
       - name: setup java
         uses: actions/setup-java@v2
@@ -72,13 +74,24 @@ jobs:
         run: pip install mkdocs-techdocs-core==0.*
       - name: Generate docs to ./sites
         run: techdocs-cli generate --no-docker
-      - name: Tar TechDocs ./sites folder
-        run: tar -czvf techdocs-latest.tar.gz ./site
       - name: Save TechDocs tar as Artifact
+        id: upload 
         uses: actions/upload-artifact@v2
         with:
           name: ${{ format('{0}-techdocs-latest', env.ENTITY_NAME) }}
-          path: ./site
+          path: ./sites
+      - name: Dispatch notify Jenkins workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: TECHDOCS-notify-jenkins
+          token: ${{ secrets.DISPATCH_BUILD_PUBLISH_TECHDOCS_TOKEN }}
+          inputs: >
+            {
+              "run_id": ${{ github.run_id }}
+            }
+
+        
+        
       # - name: Publish docs
       #   run: >
       #     techdocs-cli publish

@@ -1,4 +1,4 @@
-name: TECHDOCS-notify-jenkins
+name: techdocs-notify-jenkins
 
 on:
   workflow_dispatch: 
