@@ -83,26 +83,30 @@ publisher->hostStorage : untar and sync files
 
 ```plantuml
 left to right direction
+package "Backstage frontend"
 cloud "AWS\n"{
   component "PostgreSQL" as postgresql
   package container as "Backstage backend container"{
     [Catalog]
     [TechDocs]
     [GitHub OAuth]
+    [Express]
+    REST - Express
   } 
+  
   [S3]
   [Catalog] --> [postgresql] : read write
   [TechDocs] --> [S3] : read 
-  REST -up- container
+  [Backstage frontend] --> REST
 }
 
 cloud "GitHub\n" {
   interface "REST" as RepoAPI
   interface "REST" as OrgAPI
   interface "REST" as OAuth
-  OrgAPI - [Organization (Private)]
-  RepoAPI - [Repository (Public)]
-  OAuth - [Identity]
+  OrgAPI - [Organization]
+  RepoAPI - [Repository]
+  OAuth - [User Identity]
   [Catalog] --> OrgAPI : read
   [Catalog] --> RepoAPI : read
   [GitHub OAuth] --> OAuth 
@@ -150,9 +154,9 @@ cloud "GitHub\n" {
 ```plantuml
 left to right direction
 cloud "AWS\n" {
-  package "Backstage backend container" {
-    interface "REST" as BackstageAPI
-    BackstageAPI - [Backstage backend container]
+  package container as "Backstage backend container" {
+    interface BackstageAPI as "REST"
+    BackstageAPI - [Express]
   }
 }
 
@@ -173,15 +177,13 @@ package "Backstage frontend" {
 
 cloud "GitHub\n" {
   interface "REST" as RepoAPI
-  interface "REST" as RepoPrivateAPI
   interface "REST" as OAuth
-  RepoAPI - [Repository (Public)]
-  RepoPrivateAPI - [Repository (Private)]
-  OAuth - [Identity]
+  RepoAPI - [Repository]
+  OAuth - [User Identity]
   [GitHub OAuth] --> [OAuth]
   [GitHub Pull Requests] --> RepoAPI : read
-  [GitHub Actions] --> RepoPrivateAPI : read
-  [GitHub Code Insights] --> RepoPrivateAPI : read
-  [GitHub Security Insights] --> RepoPrivateAPI : read
+  [GitHub Actions] --> RepoAPI : read
+  [GitHub Code Insights] --> RepoAPI : read
+  [GitHub Security Insights] --> RepoAPI : read
 }
 ```
