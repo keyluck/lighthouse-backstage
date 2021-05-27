@@ -22,10 +22,10 @@ jobs:
       - name: Dispatch publish to (fake) Jenkins webhook
         uses: benc-uk/workflow-dispatch@v1
         with:
-          workflow: techdocs-dispatch-publish
+          workflow: techdocs-publish-with-jenkins
           token: ${{ secrets.DISPATCH_BUILD_PUBLISH_TECHDOCS_TOKEN }}
           inputs: >
             { 
               "archive_download_url": 
-                "${{ steps.get_artifact_id.outputs.artifacts.archive_download_url }}" 
+                "${{ steps.get_artifact_id.outputs.artifacts[0].archive_download_url }}" 
             }
