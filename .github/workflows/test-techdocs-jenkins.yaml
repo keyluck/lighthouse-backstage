@@ -1,4 +1,4 @@
-name: test-techdocs-jenkins
+name: techdocs-run-jenkins
 
 on: workflow_dispatch
 
