@@ -20,9 +20,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Echo outputs
-        run: echo ${{ steps.get_artifact_id.outputs }} > outputs.json
+        run: echo ${{ steps.get_artifact_id.outputs }} > /outputs/outputs.json
       - name: Echo artifacts
-        run: echo ${{ steps.get_artifact_id.outputs.artifacts[0].archive_download_url }} > artifacts.json
+        run: echo ${{ steps.get_artifact_id.outputs.artifacts[0].archive_download_url }} > /outputs/artifacts.json
+      - name: Save TechDocs tar as Artifact
+        id: upload 
+        uses: actions/upload-artifact@v2
+        with:
+          name: outputs
+          path: ./outputs
       - name: Dispatch publish to (fake) Jenkins webhook
         uses: benc-uk/workflow-dispatch@v1
         with:
