@@ -1,4 +1,4 @@
-name: techdocs-notify-jenkins
+name: techdocs-dispatch-publish
 
 on:
   workflow_dispatch: 
