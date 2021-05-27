@@ -85,7 +85,7 @@ jobs:
         with:
           workflow: techdocs-notify-jenkins
           token: ${{ secrets.DISPATCH_BUILD_PUBLISH_TECHDOCS_TOKEN }}
-          inputs: '{ "run_id": ${{ github.run_id }} }'
+          inputs: '{ "run_id": "${{ github.run_id }}" }'
 
         
         
