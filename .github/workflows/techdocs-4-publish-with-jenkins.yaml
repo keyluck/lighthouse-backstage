@@ -1,15 +1,23 @@
 name: techdocs-publish-with-jenkins
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+    inputs:
+      archive_download_url: 
+        description: 'archive_download_url'
+        required: true
 
 jobs:
   run-jenkinsfile:
     runs-on: ubuntu-latest
+    env:
+      ARCHIVE_DOWNLOAD_URL: ${{ github.event.inputs.archive_download_url }}
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: '7428-jenkins-test'
+          ref: 'main'
       - name: jenkinsfile-runner-prepackaged
         uses: jenkinsci/jenkinsfile-runner-github-actions/jenkinsfile-runner-prepackaged@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ARCHIVE_DOWNLOAD_URL: ${{ env.ARCHIVE_DOWNLOAD_URL }}
