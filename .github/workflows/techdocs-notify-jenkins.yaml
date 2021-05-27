@@ -1,0 +1,23 @@
+name: "Techdocs: notify Jenkins"
+
+on:
+  workflow_dispatch: 
+    inputs:
+      run_id: 
+        description: 'run_id with artifact'
+        required: true
+        
+jobs: 
+  build: 
+    runs-on: ubuntu-20.04
+    env:
+      RUN_ID: ${{ github.event.inputs.run_id }}
+    steps: 
+      - uses: octokit/request-action@v2.x
+        id: get_artifact_id
+        with:
+          route: GET /repos/department-of-veterans-affairs/lighthouse-backstage/actions/runs/${{ env.RUN_ID }}/artifacts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+     - name: Get artifact id
+        run: echo ${{ steps.get_artifact_id.outputs.data }} 
