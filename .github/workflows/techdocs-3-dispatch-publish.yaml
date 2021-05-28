@@ -32,5 +32,5 @@ jobs:
             { 
               "archive_download_url": 
                 "${{ fromJSON(steps.get_artifact_id.outputs.data).artifacts[0].archive_download_url }}",
-              "entity": "${{ github.event.inputs.entity }}
+              "entity": "${{ github.event.inputs.entity }}"
             }
