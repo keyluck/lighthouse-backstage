@@ -22,10 +22,6 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     env:
-      TECHDOCS_S3_BUCKET_NAME: ${{ secrets.TECHDOCS_S3_BUCKET_NAME }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
       ENTITY_NAMESPACE: ${{ github.event.inputs.entity_namespace }}
       ENTITY_KIND: ${{ github.event.inputs.entity_kind }}
       ENTITY_NAME: ${{ github.event.inputs.entity_name }}
@@ -85,7 +81,11 @@ jobs:
         with:
           workflow: techdocs-dispatch-publish
           token: ${{ secrets.DISPATCH_BUILD_PUBLISH_TECHDOCS_TOKEN }}
-          inputs: '{ "run_id": "${{ github.run_id }}" }'
+          inputs: >
+            { 
+              "run_id": "${{ github.run_id }}" 
+              "entity": "${{ format('{0}/{1}/{2}', env.ENTITY_NAMESPACE, env.ENTITY_KIND, env.ENTITY_NAME) }}"
+            }
 
         
         
