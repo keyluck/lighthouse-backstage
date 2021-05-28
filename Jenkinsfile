@@ -19,6 +19,6 @@ node {
 def fetchAndUnzip() {
   stage ('Fetch and unzip') {
     sh("curl -s --output ./archive.zip -H \"Authorization: Token ${env.GITHUB_TOKEN}\" -H \"Accept: application/json\" -H \"Content-type: application/json\" -X GET ${env.ARCHIVE_DOWNLOAD_URL}")
-    sh "unzip archive.zip"
+    sh "unzip ./archive.zip"
   }
 }
