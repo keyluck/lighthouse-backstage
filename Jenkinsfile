@@ -1,7 +1,5 @@
 #!groovy
 import groovy.json.JsonOutput
-Add-Type -AssemblyName System.IO.Compression.FileSystem
-
 /*
 
  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
