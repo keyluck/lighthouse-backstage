@@ -6,6 +6,9 @@ on:
       run_id: 
         description: 'run_id for workflow that created TechDocs artifact'
         required: true
+      entity:
+        description: 'bucket entity string'
+        required: true
         
 jobs: 
   build: 
@@ -13,6 +16,7 @@ jobs:
     env:
       RUN_ID: ${{ github.event.inputs.run_id }}
     steps: 
+      # TODO: add retry logic
       - uses: octokit/request-action@v2.x
         id: get_artifact_id
         with:
@@ -27,5 +31,6 @@ jobs:
           inputs: >
             { 
               "archive_download_url": 
-                "${{ fromJSON(steps.get_artifact_id.outputs.data).artifacts[0].archive_download_url }}" 
+                "${{ fromJSON(steps.get_artifact_id.outputs.data).artifacts[0].archive_download_url }}",
+              "entity": "${{ github.event.inputs.entity }}
             }
