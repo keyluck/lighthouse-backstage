@@ -16,7 +16,7 @@ node {
   sh "ls -a archive"
 }
 
-def fetchAndUnzip {
+def fetchAndUnzip() {
   stage ('Fetch and unzip') {
     sh("curl -s --output ./archive.zip -H \"Authorization: Token ${env.GITHUB_TOKEN}\" -H \"Accept: application/json\" -H \"Content-type: application/json\" -X GET ${apiUrl}")
     sh "unzip archive.zip"
