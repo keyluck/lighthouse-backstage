@@ -11,6 +11,9 @@ backend:
     port: ${PORT}
   csp:
     connect-src: ["'self'", 'http:', 'https:']
+  cache:
+  # TODO: update to use memcache in production  https://backstage.io/docs/overview/architecture-overview#cache
+    store: memory
   database:
     # config options: https://node-postgres.com/api/client
     client: pg
