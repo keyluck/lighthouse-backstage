@@ -46,8 +46,6 @@ jobs:
         with:
           repository: ${{ env.REPO_FULL_NAME }}
       - uses: actions/setup-node@v2
-      - name: Setup fx 
-        run: npm install fx
       - uses: actions/setup-python@v2
       - name: setup java
         uses: actions/setup-java@v2
@@ -70,28 +68,26 @@ jobs:
         run: pip install mkdocs-techdocs-core==0.*
       - name: Generate docs to ./sites
         run: techdocs-cli generate --no-docker
-      - name: Save TechDocs tar as Artifact
-        id: upload 
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ format('{0}-techdocs-latest', env.ENTITY_NAME) }}
-          path: ./site
-      - name: Dispatch notify Jenkins workflow
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: techdocs-dispatch-publish
-          token: ${{ secrets.DISPATCH_BUILD_PUBLISH_TECHDOCS_TOKEN }}
-          inputs: >
-            { 
-              "run_id": "${{ github.run_id }}",
-              "entity": "${{ format('{0}/{1}/{2}', env.ENTITY_NAMESPACE, env.ENTITY_KIND, env.ENTITY_NAME) }}"
-            }
-
-        
-        
-      # - name: Publish docs
-      #   run: >
-      #     techdocs-cli publish
-      #     --publisher-type awsS3
-      #     --storage-name $TECHDOCS_S3_BUCKET_NAME
-      #     --entity $ENTITY_NAMESPACE/$ENTITY_KIND/$ENTITY_NAME
+      - name: Publish docs
+        run: >
+          techdocs-cli publish
+          --publisher-type awsS3
+          --storage-name $TECHDOCS_S3_BUCKET_NAME
+          --entity $ENTITY_NAMESPACE/$ENTITY_KIND/$ENTITY_NAME
+      # TODO: delete
+      # - name: Save TechDocs tar as Artifact
+      #   id: upload
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: ${{ format('{0}-techdocs-latest', env.ENTITY_NAME) }}
+      #     path: ./site
+      # - name: Dispatch notify Jenkins workflow
+      #   uses: benc-uk/workflow-dispatch@v1
+      #   with:
+      #     workflow: techdocs-dispatch-publish
+      #     token: ${{ secrets.DISPATCH_BUILD_PUBLISH_TECHDOCS_TOKEN }}
+      #     inputs: >
+      #       {
+      #         "run_id": "${{ github.run_id }}",
+      #         "entity": "${{ format('{0}/{1}/{2}', env.ENTITY_NAMESPACE, env.ENTITY_KIND, env.ENTITY_NAME) }}"
+      #       }

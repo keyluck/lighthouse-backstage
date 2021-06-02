@@ -1,21 +1,22 @@
 name: techdocs-dispatch-publish
 
+# TODO: delete workflow
 on:
-  workflow_dispatch: 
+  workflow_dispatch:
     inputs:
-      run_id: 
+      run_id:
         description: 'run_id for workflow that created TechDocs artifact'
         required: true
       entity:
         description: 'bucket entity string'
         required: true
-        
-jobs: 
-  build: 
+
+jobs:
+  build:
     runs-on: ubuntu-20.04
     env:
       RUN_ID: ${{ github.event.inputs.run_id }}
-    steps: 
+    steps:
       # TODO: add retry logic
       - uses: octokit/request-action@v2.x
         id: get_artifact_id
@@ -29,8 +30,8 @@ jobs:
           workflow: techdocs-publish-with-jenkins
           token: ${{ secrets.DISPATCH_BUILD_PUBLISH_TECHDOCS_TOKEN }}
           inputs: >
-            { 
-              "archive_download_url": 
+            {
+              "archive_download_url":
                 "${{ fromJSON(steps.get_artifact_id.outputs.data).artifacts[0].archive_download_url }}",
               "entity": "${{ github.event.inputs.entity }}"
             }
