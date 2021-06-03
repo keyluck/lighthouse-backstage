@@ -14,7 +14,7 @@ database "GitHub Artifacts" as storage
 end box
 box VA Network
 participant "Jenkins" as deployer
-participant "EKS" as runner
+participant "ECS / Fargate" as runner
 end box
 dev->builder : merge into main
 builder->builder: build container artifact
@@ -83,7 +83,9 @@ publisher->hostStorage : untar and sync files
 
 ```plantuml
 left to right direction
-package "Backstage frontend"
+node browser{
+  package "Backstage frontend"
+}
 cloud "AWS\n"{
   component "PostgreSQL" as postgresql
   package container as "Backstage backend container"{
@@ -99,6 +101,10 @@ cloud "AWS\n"{
   [TechDocs] --> [S3] : read 
   [Backstage frontend] --> REST
 }
+note top of [Backstage frontend]
+  Hosted from Backstage 
+  backend container
+end note
 
 cloud "GitHub\n" {
   interface "REST" as RepoAPI
@@ -160,18 +166,20 @@ cloud "AWS\n" {
   }
 }
 
-package "Backstage frontend" {
- 
-  node "GitHub Plugins\n" {
-    [GitHub OAuth] --> BackstageAPI 
-    [GitHub Pull Requests] 
-    [GitHub Actions]
-    [GitHub Code Insights]
-    [GitHub Security Insights]
-  }
-  node "Backstage Plugins\n" {
-    [Catalog] --> BackstageAPI : "read write"
-    [TechDocs] --> BackstageAPI : read
+node browser { 
+    package "Backstage frontend" {
+
+    node "GitHub Plugins\n" {
+      [GitHub OAuth] --> BackstageAPI 
+      [GitHub Pull Requests] 
+      [GitHub Actions]
+      [GitHub Code Insights]
+      [GitHub Security Insights]
+    }
+    node "Backstage Plugins\n" {
+      [Catalog] --> BackstageAPI : "read write"
+      [TechDocs] --> BackstageAPI : read
+    }
   }
 }
 
