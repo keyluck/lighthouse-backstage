@@ -20,18 +20,28 @@ jobs:
         run: yarn build
       - name: Test
         run: yarn test:all
-      - name: Login to Heroku Container registry
-        if: ${{ env.SHOULD_DEPLOY == 'true' }}
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: heroku container:login
-      - name: Build and push to Heroku
-        if: ${{ env.SHOULD_DEPLOY == 'true' }}
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: heroku container:push web -a lighthouse-backstage
-      - name: Release to Heroku
-        if: ${{ env.SHOULD_DEPLOY == 'true' }}
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: heroku container:release web -a lighthouse-backstage
+      - name: Build docker image
+        run: docker image build -t backstage/staging/runner .
+      - name: Push to ECR
+        id: ecr
+        uses: jwalton/gh-ecr-push@v1
+        with:
+          access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          region: us-east-1
+          image: backstage:latest
+      # - name: Login to Heroku Container registry
+      #   if: ${{ env.SHOULD_DEPLOY == 'true' }}
+      #   env:
+      #     HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      #   run: heroku container:login
+      # - name: Build and push to Heroku
+      #   if: ${{ env.SHOULD_DEPLOY == 'true' }}
+      #   env:
+      #     HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      #   run: heroku container:push web -a lighthouse-backstage
+      # - name: Release to Heroku
+      #   if: ${{ env.SHOULD_DEPLOY == 'true' }}
+      #   env:
+      #     HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      #   run: heroku container:release web -a lighthouse-backstage

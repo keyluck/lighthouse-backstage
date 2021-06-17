@@ -1,9 +1,9 @@
 app:
   # Should be the same as backend.baseUrl when using the `app-backend` plugin
-  baseUrl: https://lighthouse-backstage.herokuapp.com
+  baseUrl: https://www.backhouselightstage.com
 
 backend:
-  baseUrl: https://lighthouse-backstage.herokuapp.com
+  baseUrl: https://www.backhouselightstage.com
   listen:
     port: ${PORT}
   csp:

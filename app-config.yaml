@@ -51,6 +51,8 @@ techdocs:
     type: 'awsS3' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
     awsS3:
       bucketName: ${TECHDOCS_S3_BUCKET_NAME}
+      credentials:
+        roleArn: ${S3_ACCESS_ROLE_ARN}
 
 auth:
   # see https://backstage.io/docs/tutorials/quickstart-app-auth to know more about enabling auth providers
