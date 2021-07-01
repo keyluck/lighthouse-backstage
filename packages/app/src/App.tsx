@@ -25,6 +25,7 @@ import { apis } from './apis';
 import { entityPage } from './components/catalog/EntityPage';
 import { Root } from './components/Root';
 import { HomePage } from './components/homepage';
+import { searchPage } from './components/search/SearchPage'
 
 const githubProvider: SignInProviderConfig = {
     id: 'github-auth-provider',
@@ -63,6 +64,9 @@ const AppRouter = app.getRouter();
 const routes = (
   <FlatRoutes>
     <Route path="/" element={<HomePage />} />
+    <Route path="/search" element={<SearchPage />}>
+      {searchPage}
+    </Route>
     <Route path="/catalog" element={<CatalogIndexPage />} />
     <Route
       path="/catalog/:namespace/:kind/:name"

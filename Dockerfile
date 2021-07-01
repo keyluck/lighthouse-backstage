@@ -26,18 +26,18 @@ COPY . .
 RUN yarn tsc
 RUN yarn --cwd packages/backend backstage-cli backend:bundle --build-dependencies
 
-LABEL maintainer=lighthouse
+# LABEL maintainer=lighthouse
 
-# Static Labels
-LABEL org.opencontainers.image.authors="leeroy-jenkles@va.gov" \
-      org.opencontainers.image.url="https://github.com/department-of-veterans-affairs/lighthouse-backstage" \
-      org.opencontainers.image.documentation="https://github.com/department-of-veterans-affairs/lighthouse-backstage/README.md" \
-      org.opencontainers.image.vendor="lighthouse" \
-      org.opencontainers.image.title="lighthouse-backstage" \
-      org.opencontainers.image.source="https://github.com/department-of-veterans-affairs/lighthouse-backstage/Dockerfile" \
-      org.opencontainers.image.description="Backstage developer portal for lighthouse project" \
-      gov.va.image.ssm_parent_version="1.4.3" \
-      gov.va.image.ssm_get_parameter_version="0.3.0" \
+# # Static Labels
+# LABEL org.opencontainers.image.authors="leeroy-jenkles@va.gov" \
+#       org.opencontainers.image.url="https://github.com/department-of-veterans-affairs/lighthouse-backstage" \
+#       org.opencontainers.image.documentation="https://github.com/department-of-veterans-affairs/lighthouse-backstage/README.md" \
+#       org.opencontainers.image.vendor="lighthouse" \
+#       org.opencontainers.image.title="lighthouse-backstage" \
+#       org.opencontainers.image.source="https://github.com/department-of-veterans-affairs/lighthouse-backstage/Dockerfile" \
+#       org.opencontainers.image.description="Backstage developer portal for lighthouse project" \
+#       gov.va.image.ssm_parent_version="1.4.3" \
+#       gov.va.image.ssm_get_parameter_version="0.3.0" \
 
 # Dynamic Labels
 # LABEL org.opencontainers.image.created=${BUILD_DATE_TIME} \

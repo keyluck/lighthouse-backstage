@@ -14,7 +14,7 @@ import {
   useHotMemoize,
   notFoundHandler,
   CacheManager,
-  SingleConnectionDatabaseManager,
+  DatabaseManager,
   SingleHostDiscovery,
   UrlReaders,
 } from '@backstage/backend-common';
@@ -26,6 +26,7 @@ import scaffolder from './plugins/scaffolder';
 import proxy from './plugins/proxy';
 import techdocs from './plugins/techdocs';
 import { PluginEnvironment } from './types';
+import search from './plugins/search'
 
 function makeCreateEnv(config: Config) {
   const root = getRootLogger();
@@ -34,7 +35,7 @@ function makeCreateEnv(config: Config) {
 
   root.info(`Created UrlReader ${reader}`);
 
-  const databaseManager = SingleConnectionDatabaseManager.fromConfig(config);
+  const databaseManager = DatabaseManager.fromConfig(config);
   const cacheManager = CacheManager.fromConfig(config);
 
   return (plugin: string): PluginEnvironment => {
@@ -58,6 +59,7 @@ async function main() {
   const proxyEnv = useHotMemoize(module, () => createEnv('proxy'));
   const techdocsEnv = useHotMemoize(module, () => createEnv('techdocs'));
   const appEnv = useHotMemoize(module, () => createEnv('app'));
+  const searchEnv = useHotMemoize(module, () => createEnv('search'));
 
   const apiRouter = Router();
   apiRouter.use('/catalog', await catalog(catalogEnv));
@@ -65,6 +67,7 @@ async function main() {
   apiRouter.use('/auth', await auth(authEnv));
   apiRouter.use('/techdocs', await techdocs(techdocsEnv));
   apiRouter.use('/proxy', await proxy(proxyEnv));
+  apiRouter.use('/search', await search(searchEnv));
   apiRouter.use(notFoundHandler());
 
   const service = createServiceBuilder(module)
