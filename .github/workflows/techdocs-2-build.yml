@@ -72,7 +72,7 @@ jobs:
         run: >
           techdocs-cli publish
           --publisher-type awsS3
-          --storage-name ${{ secrets.TECHDOCS_S3_BUCKET_NAME }}
+          --storage-name lighthouse-backstage-techdocs
           --entity ${{ env.ENTITY_NAMESPACE }}/${{ env.ENTITY_KIND }}/${{ env.ENTITY_NAME }}
       # TODO: delete
       # - name: Save TechDocs tar as Artifact
