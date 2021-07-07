@@ -73,7 +73,7 @@ jobs:
           techdocs-cli publish
           --publisher-type awsS3
           --storage-name ${{ secrets.TECHDOCS_S3_BUCKET_NAME }}
-          --entity $ENTITY_NAMESPACE/$ENTITY_KIND/$ENTITY_NAME
+          --entity ${{ env.ENTITY_NAMESPACE }}/$ENTITY_KIND/$ENTITY_NAME
       # TODO: delete
       # - name: Save TechDocs tar as Artifact
       #   id: upload
