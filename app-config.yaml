@@ -11,6 +11,8 @@ backend:
     port: 7000
   csp:
     connect-src: ["'self'", 'http:', 'https:']
+  cors:
+    origin: '*'
   cache:
   # TODO: update to use memcache in production  https://backstage.io/docs/overview/architecture-overview#cache
     store: memory
