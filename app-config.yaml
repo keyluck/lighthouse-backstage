@@ -8,7 +8,7 @@ organization:
 backend:
   baseUrl: http://localhost:7000
   listen:
-    port: ${PORT}
+    port: 7000
   csp:
     connect-src: ["'self'", 'http:', 'https:']
   cache:
@@ -19,9 +19,9 @@ backend:
     client: pg
     connection:
       host: ${POSTGRES_HOST}
-      port: ${POSTGRES_PORT}
-      user: ${POSTGRES_USER}
-      password: ${POSTGRES_PASSWORD}
+      port: 5432
+      user: postgres
+      password: postgres
     # https://node-postgres.com/features/ssl
       #ssl: require # see https://www.postgresql.org/docs/current/libpq-ssl.html Table 33.1. SSL Mode Descriptions (e.g. require)
         #ca: # if you have a CA file and want to verify it you can uncomment this section
@@ -46,15 +46,11 @@ proxy:
 # and an external cloud storage when deploying TechDocs for production use-case.
 # https://backstage.io/docs/features/techdocs/how-to-guides#how-to-migrate-from-techdocs-basic-to-recommended-deployment-approach
 techdocs:
-  builder: 'external' # Alternatives - 'external'
+  builder: 'local' # Alternatives - 'external'
+  generators:
+    techdocs: 'docker'
   publisher:
-    type: 'awsS3' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
-    awsS3:
-      bucketName: ${TECHDOCS_S3_BUCKET_NAME}
-      region: ${AWS_REGION}
-      credentials:
-        accessKeyId: ${AWS_ACCESS_KEY_ID}
-        secretAccessKey: ${AWS_SECRET_ACCESS_KEY}
+    type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
 
 auth:
   # see https://backstage.io/docs/tutorials/quickstart-app-auth to know more about enabling auth providers
