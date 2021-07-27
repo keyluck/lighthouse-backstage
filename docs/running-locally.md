@@ -30,7 +30,7 @@ sh local.sh copy
 
 **Caveats**
 - *What does this do*: This will install the application and its dependencies and then run the backend and frontend in the same container. To ensure fast hot-reloading, `node_modules` and `postgreSQL db` are stored in a docker [volume](https://docs.docker.com/storage/volumes/) and your local source files are mounted into the container.
-- *Why do you need to copy after the first run*: The application uses node_modules from Docker volume not your local files. Copying these locally so that dependencies resolve correctly in your editor.
+- *Why do you need to copy after the first run*: The application uses `node_modules` from Docker volume not your local files. Copy these locally so that dependencies resolve correctly in your editor.
 
 ## Install and run locally (TBD)
 
