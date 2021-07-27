@@ -1,3 +1,1 @@
-`yarn dev` for local
-
-
+## [Running locally](docs/running-locally.md)

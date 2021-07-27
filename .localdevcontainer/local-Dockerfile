@@ -1,0 +1,8 @@
+FROM node:14-buster
+
+COPY ./entrypoint.sh .
+COPY ./app-config.localdevcontainer.yaml .
+RUN chmod +x entrypoint.sh
+
+WORKDIR /code
+ENTRYPOINT ["/entrypoint.sh"]

@@ -4,6 +4,7 @@ repo_url: 'https://github.com/department-of-veterans-affairs/lighthouse-backstag
 nav:
   - Home: index.md
   - Deployment: deployment.md
+  - Running Locally: running-locally.md
 
 plugins:
   - techdocs-core
