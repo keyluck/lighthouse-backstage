@@ -26,6 +26,7 @@ import { entityPage } from './components/catalog/EntityPage';
 import { Root } from './components/Root';
 import { HomePage } from './components/homepage';
 import { searchPage } from './components/search/SearchPage'
+import { lightThemeVA, darkThemeVA } from './themes';
 
 const githubProvider: SignInProviderConfig = {
     id: 'github-auth-provider',
@@ -56,6 +57,18 @@ const app = createApp({
       registerComponent: catalogImportPlugin.routes.importPage,
     });
   },
+  themes: [{
+    id: 'light-theme',
+    title: 'Light Theme',
+    variant: 'light',
+    theme: lightThemeVA,
+  },
+  {
+    id: 'dark-theme',
+    title: 'Dark Theme',
+    variant: 'dark',
+    theme: darkThemeVA,
+  }],
 });
 
 const AppProvider = app.getProvider();
