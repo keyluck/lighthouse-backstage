@@ -12,7 +12,7 @@ jobs:
         run: |
           yarn backstage-cli versions:bump
       - name: Create Pull Request
-        uses: keyluck/auto-update-backstage
+        uses: peter-evans/create-pull-request@v3
         with:
             token: ${{ secrets.GITHUB_TOKEN }}
             commit-message: Auto Update for Backstage
