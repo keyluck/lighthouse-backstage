@@ -33,7 +33,7 @@ jobs:
     - name: Failed to update Backstage
       uses: actions/github-script@v3
       with:
-        script: 
+        script: |
           console.log("Failed to Update Backstage - Pull Request already exists: ",${{ needs.check-for-existing-update.outputs.url }})
       
   update-backstage:
