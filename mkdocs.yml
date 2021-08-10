@@ -5,6 +5,7 @@ nav:
   - Home: index.md
   - Deployment: deployment.md
   - Running Locally: running-locally.md
+  - Backstage Update: backstage-update.md
 
 plugins:
   - techdocs-core
