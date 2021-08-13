@@ -19,7 +19,9 @@ import {CatalogImportPage, catalogImportPlugin} from '@backstage/plugin-catalog-
 import { ScaffolderPage, scaffolderPlugin } from '@backstage/plugin-scaffolder';
 import { SearchPage } from '@backstage/plugin-search';
 import { TechRadarPage } from '@backstage/plugin-tech-radar';
-import { TechdocsPage } from '@backstage/plugin-techdocs';
+import {
+  TechdocsPage
+} from '@backstage/plugin-techdocs';
 import { UserSettingsPage } from '@backstage/plugin-user-settings';
 import { apis } from './apis';
 import { entityPage } from './components/catalog/EntityPage';

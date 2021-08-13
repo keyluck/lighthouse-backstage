@@ -26,13 +26,22 @@ import {
 } from '@backstage/plugin-api-docs';
 import {
   EntityAboutCard,
+  EntityDependsOnComponentsCard,
+  EntityDependsOnResourcesCard,
   EntitySystemDiagramCard,
   EntityHasComponentsCard,
+  EntityHasResourcesCard,
+  EntityHasSubcomponentsCard,
   EntityHasSystemsCard,
   EntityLayout,
+  EntityLinksCard,
   EntitySwitch,
+  EntityOrphanWarning,
+  EntityProcessingErrorsPanel,
   isComponentType,
   isKind,
+  hasCatalogProcessingErrors,
+  isOrphan,
 } from '@backstage/plugin-catalog';
 import {
   isGithubActionsAvailable,
@@ -78,8 +87,30 @@ const cicdContent = (
 
 const overviewContent = (
   <Grid container spacing={3} alignItems="stretch">
+    <EntitySwitch>
+      <EntitySwitch.Case if={isOrphan}>
+        <Grid item xs={12}>
+          <EntityOrphanWarning />
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
+
+    <EntitySwitch>
+      <EntitySwitch.Case if={hasCatalogProcessingErrors}>
+        <Grid item xs={12}>
+          <EntityProcessingErrorsPanel />
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
+
     <Grid item md={6}>
       <EntityAboutCard variant="gridItem" />
+    </Grid>
+    <Grid item md={4} xs={12}>
+      <EntityLinksCard />
+    </Grid>
+    <Grid item md={8} xs={12}>
+      <EntityHasSubcomponentsCard variant="gridItem" />
     </Grid>
   </Grid>
 );
@@ -96,10 +127,10 @@ const serviceEntityPage = (
 
     <EntityLayout.Route path="/api" title="API">
       <Grid container spacing={3} alignItems="stretch">
-        <Grid item md={6}>
+        <Grid item md={6} xs={12}>
           <EntityProvidedApisCard />
         </Grid>
-        <Grid item md={6}>
+        <Grid item md={6} xs={12}>
           <EntityConsumedApisCard />
         </Grid>
       </Grid>
@@ -119,6 +150,16 @@ const websiteEntityPage = (
 
     <EntityLayout.Route path="/ci-cd" title="CI/CD">
       {cicdContent}
+    </EntityLayout.Route>
+    <EntityLayout.Route path="/dependencies" title="Dependencies">
+      <Grid container spacing={3} alignItems="stretch">
+        <Grid item md={6}>
+          <EntityDependsOnComponentsCard variant="gridItem" />
+        </Grid>
+        <Grid item md={6}>
+          <EntityDependsOnResourcesCard variant="gridItem" />
+        </Grid>
+      </Grid>
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/docs" title="Docs">
@@ -172,14 +213,14 @@ const apiPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       <Grid container spacing={3}>
-        <Grid item md={6}>
+        <Grid item md={6} xs={12}>
           <EntityAboutCard />
         </Grid>
         <Grid container item md={12}>
-          <Grid item md={6}>
+          <Grid item md={6} xs={12}>
             <EntityProvidingComponentsCard />
           </Grid>
-          <Grid item md={6}>
+          <Grid item md={6} xs={12}>
             <EntityConsumingComponentsCard />
           </Grid>
         </Grid>
@@ -233,13 +274,13 @@ const systemPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       <Grid container spacing={3} alignItems="stretch">
-        <Grid item md={6}>
+        <Grid item md={6} xs={12}>
           <EntityAboutCard variant="gridItem" />
         </Grid>
-        <Grid item md={6}>
+        <Grid item md={6} xs={12}>
           <EntityHasComponentsCard variant="gridItem" />
         </Grid>
-        <Grid item md={6}>
+        <Grid item md={6} xs={12}>
           <EntityHasApisCard variant="gridItem" />
         </Grid>
       </Grid>
@@ -254,10 +295,10 @@ const domainPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       <Grid container spacing={3} alignItems="stretch">
-        <Grid item md={6}>
+        <Grid item md={6} xs={12}>
           <EntityAboutCard variant="gridItem" />
         </Grid>
-        <Grid item md={6}>
+        <Grid item md={6} xs={12}>
           <EntityHasSystemsCard variant="gridItem" />
         </Grid>
       </Grid>
