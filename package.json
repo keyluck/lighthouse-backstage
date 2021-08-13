@@ -22,7 +22,8 @@
     "lint:all": "lerna run lint --",
     "create-plugin": "backstage-cli create-plugin --scope internal --no-private",
     "remove-plugin": "backstage-cli remove-plugin",
-    "release": "heroku container:push web -a lighthouse-backstage && heroku container:release web -a lighthouse-backstage"
+    "release": "heroku container:push web -a lighthouse-backstage && heroku container:release web -a lighthouse-backstage",
+    "prettier:check": "prettier --check ."
   },
   "resolutions": {
     "graphql-language-service-interface": "2.8.2",
@@ -39,7 +40,7 @@
     "@spotify/prettier-config": "^7.0.0",
     "concurrently": "^6.0.0",
     "lerna": "^4.0.0",
-    "prettier": "^1.19.1"
+    "prettier": "^2.3.2"
   },
   "prettier": "@spotify/prettier-config",
   "lint-staged": {
@@ -60,6 +61,6 @@
     "@changesets/cli": "^2.16.0"
   },
   "metadata": {
-    "backstage-create-app-version": "0.3.34"
+    "backstage-create-app-version": "0.3.35"
   }
 }

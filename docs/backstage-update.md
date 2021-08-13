@@ -5,7 +5,8 @@
 # Update Backstage Workflow Jobs
 
 ## check-for-existing-update
-Description: Before upgrade process begins, this job checks if there is currently an open pull request to update backstage. 
+
+Description: Before upgrade process begins, this job checks if there is currently an open pull request to update backstage.
 
 ```
 Steps:
@@ -18,6 +19,7 @@ Steps:
 ```
 
 ## link-pr
+
 Description: If there is an open pull request to update backstage, this job will output a link to the open pull request.
 
 ```
@@ -28,6 +30,7 @@ Steps:
 ```
 
 ## update-backstage
+
 Description: If there is no open pull request to update backstage, this job will create a branch, perform the upgrade process, and create a pull request with the new changes.
 
 ```

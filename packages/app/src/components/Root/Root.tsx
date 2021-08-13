@@ -78,7 +78,7 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
       <SidebarDivider />
       {/* Global nav, not org-specific */}
       <SidebarItem icon={HomeIcon} to="/" text="Home" />
-      <SidebarItem icon={ListIcon} to="/catalog" text="Catalog" />
+      <SidebarItem icon={ListIcon} to="catalog" text="Catalog" />
       <SidebarItem icon={ExtensionIcon} to="api-docs" text="APIs" />
       <SidebarItem icon={LibraryBooks} to="docs" text="Docs" />
       <SidebarItem icon={CreateComponentIcon} to="create" text="Create..." />

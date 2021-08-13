@@ -5,8 +5,8 @@
 [Coding guidelines](#coding-guidelines)
 [Updating build and deploy](#updating-build-and-deploy)
 
-
 ## Code of conduct
+
 TBD
 
 ## Contribution requirements

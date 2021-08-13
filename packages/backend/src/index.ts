@@ -26,7 +26,7 @@ import scaffolder from './plugins/scaffolder';
 import proxy from './plugins/proxy';
 import techdocs from './plugins/techdocs';
 import { PluginEnvironment } from './types';
-import search from './plugins/search'
+import search from './plugins/search';
 
 function makeCreateEnv(config: Config) {
   const root = getRootLogger();

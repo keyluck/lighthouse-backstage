@@ -7,7 +7,7 @@ import {
   OAuthRequestDialog,
   githubAuthApiRef,
   SignInProviderConfig,
-  SignInPage
+  SignInPage,
 } from '@backstage/core';
 import { apiDocsPlugin, ApiExplorerPage } from '@backstage/plugin-api-docs';
 import {
@@ -15,37 +15,38 @@ import {
   CatalogIndexPage,
   catalogPlugin,
 } from '@backstage/plugin-catalog';
-import {CatalogImportPage, catalogImportPlugin} from '@backstage/plugin-catalog-import';
+import {
+  CatalogImportPage,
+  catalogImportPlugin,
+} from '@backstage/plugin-catalog-import';
 import { ScaffolderPage, scaffolderPlugin } from '@backstage/plugin-scaffolder';
 import { SearchPage } from '@backstage/plugin-search';
 import { TechRadarPage } from '@backstage/plugin-tech-radar';
 import {
-  TechdocsPage
+  DefaultTechDocsHome,
+  TechDocsIndexPage,
+  TechDocsReaderPage,
 } from '@backstage/plugin-techdocs';
 import { UserSettingsPage } from '@backstage/plugin-user-settings';
 import { apis } from './apis';
 import { entityPage } from './components/catalog/EntityPage';
 import { Root } from './components/Root';
 import { HomePage } from './components/homepage';
-import { searchPage } from './components/search/SearchPage'
+import { searchPage } from './components/search/SearchPage';
 import { lightThemeVA, darkThemeVA } from './themes';
 
 const githubProvider: SignInProviderConfig = {
-    id: 'github-auth-provider',
-    title: 'GitHub',
-    message: 'Sign in using GitHub',
-    apiRef: githubAuthApiRef,
-  };
+  id: 'github-auth-provider',
+  title: 'GitHub',
+  message: 'Sign in using GitHub',
+  apiRef: githubAuthApiRef,
+};
 
 const app = createApp({
   apis,
   components: {
     SignInPage: props => (
-      <SignInPage
-        {...props}
-        auto
-        providers={['guest', githubProvider]}
-      />
+      <SignInPage {...props} auto providers={['guest', githubProvider]} />
     ),
   },
   bindRoutes({ bind }) {
@@ -59,18 +60,20 @@ const app = createApp({
       registerComponent: catalogImportPlugin.routes.importPage,
     });
   },
-  themes: [{
-    id: 'light-theme',
-    title: 'Light Theme',
-    variant: 'light',
-    theme: lightThemeVA,
-  },
-  {
-    id: 'dark-theme',
-    title: 'Dark Theme',
-    variant: 'dark',
-    theme: darkThemeVA,
-  }],
+  themes: [
+    {
+      id: 'light-theme',
+      title: 'Light Theme',
+      variant: 'light',
+      theme: lightThemeVA,
+    },
+    {
+      id: 'dark-theme',
+      title: 'Dark Theme',
+      variant: 'dark',
+      theme: darkThemeVA,
+    },
+  ],
 });
 
 const AppProvider = app.getProvider();
@@ -89,7 +92,13 @@ const routes = (
     >
       {entityPage}
     </Route>
-    <Route path="/docs" element={<TechdocsPage />} />
+    <Route path="/docs" element={<TechDocsIndexPage />}>
+      <DefaultTechDocsHome />
+    </Route>
+    <Route
+      path="/docs/:namespace/:kind/:name/*"
+      element={<TechDocsReaderPage />}
+    />
     <Route path="/create" element={<ScaffolderPage />} />
     <Route path="/api-docs" element={<ApiExplorerPage />} />
     <Route

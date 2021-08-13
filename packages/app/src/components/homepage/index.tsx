@@ -1,11 +1,11 @@
 import { Grid } from '@material-ui/core';
-import React, { PropsWithChildren} from 'react';
+import React, { PropsWithChildren } from 'react';
 import {
   Content,
   ContentHeader,
   Header,
   InfoCard,
-  Page
+  Page,
 } from '@backstage/core';
 
 export default {
@@ -23,9 +23,9 @@ const Wrapper = ({ children }: PropsWithChildren<{}>) => (
 
 export const HomePage = () => (
   <Page themeId="home">
-    <Header title='DVP Developer Portal Homepage' />
+    <Header title="DVP Developer Portal Homepage" />
     <Content>
-      {'cool stuff' && <ContentHeader title='more cool stuff' />}
+      {'cool stuff' && <ContentHeader title="more cool stuff" />}
       <Wrapper>
         <InfoCard title="Information Card" subheader="Subheader">
           'This is the home page'
