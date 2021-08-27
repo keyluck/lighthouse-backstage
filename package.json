@@ -17,7 +17,7 @@
     "clean": "backstage-cli clean && lerna run clean",
     "diff": "lerna run diff --",
     "test": "lerna run test --since origin/main -- --coverage",
-    "test:all": "lerna run test -- --coverage",
+    "test:all": "mkdir -p ./logs && lerna run test -- --coverage 2>&1 | tee ./logs/unit-tests.txt",
     "lint": "lerna run lint --since origin/main --",
     "lint:all": "lerna run lint --",
     "create-plugin": "backstage-cli create-plugin --scope internal --no-private",
@@ -52,15 +52,13 @@
       "prettier --write"
     ]
   },
-  "jest": {
-    "transformModules": [
-      "@asyncapi/react-component"
-    ]
-  },
   "dependencies": {
     "@changesets/cli": "^2.16.0"
   },
   "metadata": {
     "backstage-create-app-version": "0.3.35"
+  },
+  "jest": {
+    "coverageDirectory":"../../../logs/coverage"
   }
 }
